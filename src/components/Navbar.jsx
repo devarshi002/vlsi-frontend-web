@@ -55,7 +55,7 @@ function HomeDropdown({ isMobile = false, onClose }) {
 
   /* ── Desktop ── */
   return (
-    <li className="relative" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+    <li className="relative z-50" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       <Link to="/"
         className={`flex items-center gap-1 font-mono text-xs tracking-widest uppercase
           transition-colors duration-200 relative group pb-1
@@ -74,8 +74,8 @@ function HomeDropdown({ isMobile = false, onClose }) {
           rotate-45 bg-space-800 border-l border-t border-plasma-700/40 z-10" />
 
         <div className="relative rounded-xl overflow-hidden border border-plasma-700/40
-          bg-space-800/98 backdrop-blur-xl
-          shadow-[0_20px_60px_rgba(0,0,0,0.6),0_0_30px_rgba(92,33,182,0.12)] p-1.5">
+          backdrop-blur-xl
+          shadow-[0_20px_60px_rgba(0,0,0,0.85)] p-1.5" style={{ background: "#0a1628" }}>
           <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-neon-500/50 to-transparent" />
 
           <div className="px-2 pt-2.5 pb-1.5">

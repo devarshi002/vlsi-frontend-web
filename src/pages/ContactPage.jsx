@@ -54,7 +54,7 @@ function ContactForm() {
     border border-plasma-700/25 text-slate-200 placeholder-slate-600
     focus:outline-none focus:border-plasma-500/50 focus:bg-space-800/90 transition-all duration-200`;
 
-  const labelClass = 'block font-mono text-[0.68rem] tracking-[2px] uppercase text-slate-500 mb-1.5';
+  const labelClass = 'block font-mono text-[0.68rem] tracking-[2px] uppercase text-white mb-1.5';
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-5">
@@ -94,7 +94,7 @@ function ContactForm() {
               className={`px-3 py-1.5 font-mono text-[0.68rem] tracking-wide rounded-lg border transition-all duration-150
                 ${form.mode === m
                   ? 'bg-plasma-700/25 border-plasma-500/50 text-plasma-300'
-                  : 'border-plasma-700/20 text-slate-500 hover:border-plasma-600/35 hover:text-plasma-400'}`}>
+                  : 'border-plasma-700/20 text-white hover:border-plasma-600/35 hover:text-plasma-400'}`}>
               {m}
             </button>
           ))}
@@ -181,7 +181,7 @@ export default function ContactPage() {
             ))}
 
             {/* WhatsApp CTA */}
-            <a href="https://wa.me/918012345678" target="_blank" rel="noreferrer"
+            <a href="https://wa.me/918459154708" target="_blank" rel="noreferrer"
               className="flex items-center justify-center gap-2 py-3.5 rounded-xl font-exo font-semibold text-sm
                 tracking-wide border border-neon-500/40 text-neon-500
                 hover:bg-neon-500/8 hover:border-neon-500 transition-all duration-200 text-center">
