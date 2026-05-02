@@ -1,4 +1,3 @@
-import BackgroundLayers from '../components/BackgroundLayers';
 import Hero from '../components/Hero';
 import StatsBar from '../components/StatsBar';
 import Courses from '../components/Courses';
@@ -6,8 +5,8 @@ import WhyUs from '../components/WhyUs';
 import Programs from '../components/Programs';
 import Testimonials from '../components/Testimonials';
 import CTASection from '../components/CTASection';
-import SectionCard from '../components/shared/SectionCard';
 import { useInView } from '../hooks/useInView';
+import ScrollPopup from '../components/ScrollPopup';
 
 const values = [
   { icon: '🎯', title: 'Excellence', desc: 'We hold every course, mentor, and lab session to the highest industry standard — no shortcuts, no filler.' },
@@ -131,6 +130,7 @@ export default function HomePage() {
       <Programs />
       <Testimonials />
       <CTASection />
+      <ScrollPopup />
     </>
   );
 }
