@@ -3,92 +3,73 @@ import ChipSVG from './ChipSVG';
 export default function Hero() {
   return (
     <section className="relative z-10 min-h-screen flex items-center px-6 lg:px-16 overflow-hidden">
-      {/* Plasma orbs */}
-      <div className="orb-pulse absolute rounded-full pointer-events-none"
-        style={{
-          width: 700, height: 700,
-          background: 'radial-gradient(circle, rgba(92,33,182,0.22) 0%, transparent 70%)',
-          top: -200, right: -100,
-          filter: 'blur(80px)',
-        }}
-      />
-      <div className="orb-pulse-slow absolute rounded-full pointer-events-none"
-        style={{
-          width: 500, height: 500,
-          background: 'radial-gradient(circle, rgba(74,222,128,0.1) 0%, transparent 70%)',
-          bottom: -100, left: -80,
-          filter: 'blur(80px)',
-        }}
-      />
-      <div className="orb-pulse absolute rounded-full pointer-events-none"
-        style={{
-          width: 320, height: 320,
-          background: 'radial-gradient(circle, rgba(34,211,238,0.09) 0%, transparent 70%)',
-          top: '40%', right: '35%',
-          filter: 'blur(60px)',
-          animationDelay: '1s',
-        }}
-      />
 
-      {/* Content */}
-      <div className="relative max-w-2xl">
+      {/* Blue glow orbs */}
+      <div className="absolute pointer-events-none"
+        style={{ width: 600, height: 600, top: -200, right: -100, filter: 'blur(100px)',
+          background: 'radial-gradient(circle, rgba(0,100,200,0.15) 0%, transparent 70%)',
+          animation: 'pulseBlue 6s ease-in-out infinite' }} />
+      <div className="absolute pointer-events-none"
+        style={{ width: 400, height: 400, bottom: -100, left: -80, filter: 'blur(80px)',
+          background: 'radial-gradient(circle, rgba(0,60,160,0.12) 0%, transparent 70%)',
+          animation: 'pulseBlue 9s ease-in-out 2s infinite' }} />
+
+      <div className="relative max-w-3xl">
+
         {/* Badge */}
-        <div className="hero-anim-1 inline-flex items-center gap-2 px-4 py-1.5 mb-8
-          border border-neon-500/40 rounded-full bg-neon-500/5">
-          <span className="blink-dot w-1.5 h-1.5 rounded-full bg-neon-500 shadow-[0_0_8px_#4ade80]" />
-          <span className="font-mono text-[0.7rem] tracking-[2px] uppercase text-neon-500">
-            Admissions Open — Batch 2025
-          </span>
+        <div className="anim-1 inline-flex items-center gap-2 px-3 py-1.5 mb-8 tag-blue rounded-none">
+          <span className="blink-dot w-1.5 h-1.5 rounded-full bg-electric"
+            style={{ boxShadow: '0 0 6px #00b4ff' }} />
+          BENGALURU CHIP VERIFICATION INSTITUTE
         </div>
 
         {/* Headline */}
-        <h1 className="hero-anim-2 font-orbitron font-black leading-[1.08] mb-6"
-          style={{ fontSize: 'clamp(2.4rem, 5vw, 4rem)' }}>
-          <span className="block text-gradient-plasma">Design the Future</span>
-          <span className="block text-gradient-green">Chip by Chip.</span>
+        <h1 className="anim-2 font-mono leading-[1.1] mb-6"
+          style={{ fontSize: 'clamp(2.2rem, 5vw, 4rem)' }}>
+          <span className="block text-white">Train for the</span>
+          <span className="block text-electric" style={{ textShadow: '0 0 30px rgba(0,180,255,0.4)' }}>
+            Future of VLSI
+          </span>
+          <span className="block text-white">Design.</span>
         </h1>
 
         {/* Sub */}
-        <p className="hero-anim-3 font-exo font-light text-slate-400 text-lg leading-relaxed mb-10 max-w-xl">
-          India's premier VLSI design training institute. Master RTL design, physical design,
-          verification, and analog layout with industry-grade tools and expert mentorship.
+        <p className="anim-3 text-steel-300 text-sm leading-relaxed mb-10 max-w-xl font-mono">
+          Industry-aligned courses in RTL Design, Physical Design, UVM Verification,
+          and DFT — built for engineers ready to lead in semiconductor design.
         </p>
 
         {/* Actions */}
-        <div className="hero-anim-4 flex flex-wrap gap-4">
-          <a href="#courses"
-            className="px-8 py-3.5 font-exo font-semibold text-sm tracking-wider uppercase
-              bg-gradient-to-r from-plasma-600 to-plasma-700 text-white rounded
-              border border-plasma-400/20 hover:shadow-[0_0_32px_rgba(124,58,237,0.55)]
-              hover:-translate-y-0.5 transition-all duration-200">
-            Explore Courses
+        <div className="anim-4 flex flex-wrap gap-4">
+          <a href="/services"
+            className="px-6 py-3 btn-primary-blue text-xs">
+            [ BROWSE COURSES ]
           </a>
-          <a href="#contact"
-            className="px-8 py-3.5 font-exo font-semibold text-sm tracking-wider uppercase
-              bg-transparent text-neon-500 rounded border border-neon-500/40
-              hover:bg-neon-500/8 hover:border-neon-500 hover:shadow-[0_0_22px_rgba(74,222,128,0.2)]
-              hover:-translate-y-0.5 transition-all duration-200">
-            Free Counselling
+          <a href="/contact"
+            className="px-6 py-3 btn-secondary-blue text-xs">
+            [ TALK TO US ]
           </a>
         </div>
 
         {/* Mini stats */}
-        <div className="hero-anim-4 flex gap-8 mt-12 pt-8 border-t border-plasma-700/20">
+        <div className="anim-4 flex gap-10 mt-14 pt-8"
+          style={{ borderTop: '1px solid rgba(0,180,255,0.1)' }}>
           {[
-            { n: '2500+', l: 'Trained' },
-            { n: '98%', l: 'Placement' },
-            { n: '150+', l: 'Partners' },
+            { n: '2500+', l: 'ENGINEERS TRAINED' },
+            { n: '98%',   l: 'PLACEMENT RATE' },
+            { n: '150+',  l: 'HIRING PARTNERS' },
           ].map(s => (
             <div key={s.l}>
-              <div className="font-orbitron font-bold text-xl text-gradient-green">{s.n}</div>
-              <div className="font-mono text-[0.68rem] tracking-widest uppercase text-slate-500 mt-0.5">{s.l}</div>
+              <div className="font-mono text-2xl text-electric mb-0.5"
+                style={{ textShadow: '0 0 20px rgba(0,180,255,0.5)' }}>{s.n}</div>
+              <div className="font-mono text-[0.6rem] tracking-[3px] text-steel-500">{s.l}</div>
             </div>
           ))}
         </div>
       </div>
 
       {/* Chip visual */}
-      <div className="chip-float hidden xl:block absolute right-16 top-1/2 -translate-y-1/2 w-[400px] h-[400px]">
+      <div className="chip-float hidden xl:block absolute right-16 top-1/2 -translate-y-1/2 w-[380px] h-[380px] opacity-70">
         <ChipSVG />
       </div>
     </section>

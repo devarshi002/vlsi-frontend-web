@@ -2,34 +2,34 @@ import { stats, partnerLogos } from '../data/siteData';
 
 export default function StatsBar() {
   const doubled = [...partnerLogos, ...partnerLogos];
-
   return (
     <>
       {/* Stats */}
-      <div className="relative z-10 grid grid-cols-2 lg:grid-cols-4 divide-x divide-plasma-700/25
-        border-y border-plasma-700/30 bg-space-800/80 backdrop-blur-sm">
-        {stats.map((s) => (
+      <div className="relative z-10 grid grid-cols-2 lg:grid-cols-4"
+        style={{ borderTop: '1px solid rgba(0,180,255,0.1)', borderBottom: '1px solid rgba(0,180,255,0.1)',
+          background: 'rgba(4,16,32,0.8)', backdropFilter: 'blur(10px)' }}>
+        {stats.map((s, i) => (
           <div key={s.label}
-            className="py-8 px-6 text-center hover:bg-plasma-700/8 transition-colors duration-300 group">
-            <span className="block font-orbitron font-bold text-3xl text-gradient-green
-              group-hover:drop-shadow-[0_0_12px_rgba(74,222,128,0.7)] transition-all duration-300">
+            className="py-8 px-6 text-center group cursor-default transition-colors duration-200"
+            style={{ borderRight: i < 3 ? '1px solid rgba(0,180,255,0.08)' : 'none' }}>
+            <span className="block font-mono text-3xl text-electric mb-1"
+              style={{ textShadow: '0 0 20px rgba(0,180,255,0.5)' }}>
               {s.num}
             </span>
-            <span className="font-mono text-[0.72rem] tracking-widest uppercase text-slate-500 mt-1 block">
+            <span className="font-mono text-[0.6rem] tracking-[3px] uppercase text-steel-500">
               {s.label}
             </span>
           </div>
         ))}
       </div>
 
-      {/* Partner marquee */}
-      <div className="relative z-10 py-5 border-b border-plasma-700/20 overflow-hidden
-        bg-space-900/60 backdrop-blur-sm">
-        <div className="marquee-track flex gap-12 whitespace-nowrap w-max">
+      {/* Marquee */}
+      <div className="relative z-10 py-4 overflow-hidden"
+        style={{ borderBottom: '1px solid rgba(0,180,255,0.08)', background: 'rgba(2,13,26,0.6)' }}>
+        <div className="marquee-track flex gap-14 whitespace-nowrap w-max">
           {doubled.map((name, i) => (
-            <span key={i}
-              className="font-mono text-[0.7rem] tracking-[3px] uppercase text-slate-600
-                hover:text-plasma-400 transition-colors duration-200 cursor-default inline-block">
+            <span key={i} className="font-mono text-[0.65rem] tracking-[3px] uppercase text-steel-600
+              hover:text-electric transition-colors duration-200 cursor-default">
               {name}
             </span>
           ))}

@@ -29,26 +29,36 @@ const footerLinks = {
 
 export default function Footer() {
   return (
-    <footer className="relative z-10 border-t border-plasma-700/20">
+    <footer className="relative z-10" style={{ borderTop: '1px solid rgba(0,180,255,0.1)' }}>
       <div className="max-w-7xl mx-auto px-6 lg:px-16 py-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
         <div>
-          <div className="mb-4">
-            <div className="font-orbitron font-black text-lg tracking-widest text-gradient-logo">NanoCore</div>
-            <div className="font-mono text-[0.5rem] tracking-[5px] text-plasma-400/60 uppercase mt-0.5">VLSI Training Institute</div>
+          <div className="mb-5">
+            <div className="flex items-center gap-0 mb-1">
+              <span className="font-mono text-white tracking-[3px]">NANO</span>
+              <span className="font-mono text-electric tracking-[3px]">CORE</span>
+            </div>
+            <div className="font-mono text-[0.48rem] tracking-[4px] text-steel-600 uppercase">
+              VLSI TRAINING INSTITUTE
+            </div>
           </div>
-          <p className="text-sm text-slate-500 leading-relaxed mb-4">
-            India's most advanced VLSI training institute. Empowering engineers with silicon-level expertise since 2012.
+          <p className="font-mono text-[0.7rem] text-steel-600 leading-relaxed mb-4">
+            India's most advanced VLSI training institute. Empowering engineers since 2012.
           </p>
-          <p className="font-mono text-[0.68rem] text-neon-500/60">📍 Koramangala · HSR Layout · Online</p>
+          <p className="font-mono text-[0.65rem] text-electric/50">
+            ▸ Koramangala · HSR Layout · Online
+          </p>
         </div>
 
         {Object.entries(footerLinks).map(([title, links]) => (
           <div key={title}>
-            <h5 className="font-orbitron font-semibold text-[0.72rem] tracking-[2px] uppercase text-slate-200 mb-5">{title}</h5>
+            <h5 className="font-mono text-[0.65rem] tracking-[3px] uppercase text-steel-400 mb-5">
+              {title}
+            </h5>
             <ul className="flex flex-col gap-2.5">
               {links.map(link => (
                 <li key={link.label}>
-                  <Link to={link.to} className="text-sm text-slate-500 hover:text-neon-500 transition-colors duration-150">
+                  <Link to={link.to}
+                    className="font-mono text-[0.7rem] text-steel-600 hover:text-electric transition-colors duration-150">
                     {link.label}
                   </Link>
                 </li>
@@ -58,10 +68,14 @@ export default function Footer() {
         ))}
       </div>
 
-      <div className="border-t border-plasma-700/15 px-6 lg:px-16 py-5 flex flex-col sm:flex-row
-        items-center justify-between gap-3 max-w-7xl mx-auto">
-        <p className="font-mono text-[0.7rem] text-slate-600">© 2025 NanoCore VLSI Institute. All rights reserved.</p>
-        <p className="font-mono text-[0.68rem] text-neon-500/40">// Designed for engineers · Built for Silicon Valley</p>
+      <div className="px-6 lg:px-16 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 max-w-7xl mx-auto"
+        style={{ borderTop: '1px solid rgba(0,180,255,0.06)' }}>
+        <p className="font-mono text-[0.62rem] text-steel-700">
+          © 2025 NanoCore VLSI Institute. All rights reserved.
+        </p>
+        <p className="font-mono text-[0.6rem] text-electric/25">
+          // Designed for engineers · Built for Silicon Valley
+        </p>
       </div>
     </footer>
   );

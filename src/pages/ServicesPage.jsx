@@ -1,188 +1,190 @@
+import { useState } from 'react';
 import PageHero from '../components/shared/PageHero';
-import SectionCard from '../components/shared/SectionCard';
-import CTASection from '../components/CTASection';
 import { useInView } from '../hooks/useInView';
-import { courses } from '../data/siteData';
 
-const serviceCategories = [
-  {
-    tag: '// Academic Programs',
-    title: 'Certification Courses',
-    desc: 'Deep-dive, tool-intensive programs designed for freshers and engineers looking to pivot into VLSI.',
-    items: courses,
-  },
+const articles = [
+  { id: 1, tag: 'Industry',  title: "India's Semiconductor Mission: What It Means for VLSI Engineers in 2025", date: 'Apr 18, 2025', read: '6 min',  excerpt: "The ₹76,000 crore India Semiconductor Mission is creating thousands of new VLSI jobs. Here's what skills are in demand and how to position yourself.", featured: true },
+  { id: 2, tag: 'Technical', title: 'RTL to GDSII: The Complete Chip Design Flow Explained',                    date: 'Apr 10, 2025', read: '12 min', excerpt: 'A comprehensive walkthrough of every stage in the digital IC design flow, from RTL coding to tapeout — with tool names at each step.' },
+  { id: 3, tag: 'Career',    title: 'How to Crack a VLSI Physical Design Interview at Qualcomm',               date: 'Mar 28, 2025', read: '8 min',  excerpt: 'Our placement team compiled the most common PD interview questions asked at top semiconductor companies, with detailed answers.' },
+  { id: 4, tag: 'Technical', title: 'UVM vs Traditional Testbench: When to Use What',                          date: 'Mar 15, 2025', read: '9 min',  excerpt: 'A practical comparison of UVM-based and traditional directed testbenches — trade-offs, use cases, and when the overhead is worth it.' },
+  { id: 5, tag: 'Industry',  title: 'Top 10 Semiconductor Companies Hiring in Bangalore Right Now',             date: 'Mar 5, 2025',  read: '4 min',  excerpt: "We analysed 200+ open VLSI roles in Bangalore. Here are the top hiring companies, salaries, and skills they're looking for." },
+  { id: 6, tag: 'Career',    title: 'Switching from Software to VLSI: A Realistic Roadmap',                    date: 'Feb 20, 2025', read: '7 min',  excerpt: 'Three alumni who made the switch from software engineering to VLSI design share their exact preparation timeline and what worked.' },
+  { id: 7, tag: 'Technical', title: 'Understanding Static Timing Analysis: Setup and Hold Explained',           date: 'Feb 8, 2025',  read: '10 min', excerpt: 'STA is the most critical signoff step in digital design. This guide breaks down setup time, hold time, slack, and timing violations clearly.' },
+  { id: 8, tag: 'Technical', title: 'Low Power Design Techniques Every VLSI Engineer Should Know',              date: 'Jan 25, 2025', read: '11 min', excerpt: 'Clock gating, power gating, multi-Vt, and dynamic voltage scaling — practical techniques with real impact on silicon power consumption.' },
 ];
 
-const extraServices = [
-  {
-    icon: '🏢',
-    title: 'Corporate Training',
-    desc: 'Custom VLSI upskilling programs for semiconductor teams. On-site or remote. Tailored curriculum, dedicated trainer, and progress tracking.',
-    points: ['Custom curriculum design', 'On-site / remote delivery', 'Team-size batches (5–50)', 'Completion certificates'],
-    tag: 'Enterprise',
-  },
-  {
-    icon: '🎓',
-    title: '1-on-1 Mentorship',
-    desc: 'Personalised coaching sessions with a senior industry engineer. Ideal for targeted skill gaps or interview preparation.',
-    points: ['Flexible scheduling', 'Domain-specific focus', 'Mock technical interviews', 'Resume & LinkedIn review'],
-    tag: 'Premium',
-  },
-  {
-    icon: '💼',
-    title: 'Placement Services',
-    desc: 'End-to-end placement assistance — from resume building to offer letter. Exclusive access to our 150+ partner company network.',
-    points: ['Resume & portfolio review', 'Mock HR + technical rounds', 'Direct company referrals', 'Salary negotiation guidance'],
-    tag: 'Career',
-  },
-  {
-    icon: '🔧',
-    title: 'EDA Tool Workshops',
-    desc: 'Short intensive 2–5 day workshops focused on a single EDA tool. Perfect for working engineers needing quick upskilling.',
-    points: ['Synopsys DC · Cadence Innovus', 'PrimeTime · Calibre · Virtuoso', 'VCS · Questasim · SpyGlass', 'Certificate of completion'],
-    tag: 'Workshops',
-  },
-];
+const tagStyle = {
+  Industry:  { border: '1px solid rgba(0,180,255,0.35)',  color: '#00b4ff',  background: 'rgba(0,180,255,0.06)' },
+  Technical: { border: '1px solid rgba(96,165,250,0.35)', color: '#60a5fa',  background: 'rgba(96,165,250,0.06)' },
+  Career:    { border: '1px solid rgba(34,211,238,0.35)', color: '#22d3ee',  background: 'rgba(34,211,238,0.06)' },
+};
 
-function CourseTable() {
-  const [ref, inView] = useInView({ threshold: 0.05 });
-  return (
-    <div ref={ref} className="overflow-x-auto rounded-xl border border-plasma-700/25">
-      <table className="w-full text-sm">
-        <thead>
-          <tr className="border-b border-plasma-700/30 bg-space-800/80">
-            <th className="text-left px-5 py-3.5 font-mono text-[0.68rem] tracking-[2px] uppercase text-plasma-400">Course</th>
-            <th className="text-left px-5 py-3.5 font-mono text-[0.68rem] tracking-[2px] uppercase text-plasma-400">Duration</th>
-            <th className="text-left px-5 py-3.5 font-mono text-[0.68rem] tracking-[2px] uppercase text-plasma-400">Level</th>
-            <th className="text-left px-5 py-3.5 font-mono text-[0.68rem] tracking-[2px] uppercase text-plasma-400">Credential</th>
-            <th className="text-left px-5 py-3.5 font-mono text-[0.68rem] tracking-[2px] uppercase text-plasma-400"></th>
-          </tr>
-        </thead>
-        <tbody>
-          {courses.map((c, i) => (
-            <tr key={c.id}
-              className={`border-b border-plasma-700/15 hover:bg-plasma-700/8 transition-colors duration-150
-                ${inView ? 'opacity-100' : 'opacity-0'}`}
-              style={{ transition: `opacity 0.4s ease ${i * 60}ms` }}>
-              <td className="px-5 py-4">
-                <div className="flex items-center gap-3">
-                  <span className="text-lg">{c.icon}</span>
-                  <div>
-                    <div className="font-exo font-semibold text-slate-100 text-[0.88rem]">{c.name}</div>
-                    <div className="font-mono text-[0.62rem] text-slate-600 mt-0.5">{c.extra}</div>
-                  </div>
-                </div>
-              </td>
-              <td className="px-5 py-4 font-mono text-[0.75rem] text-neon-500">{c.duration}</td>
-              <td className="px-5 py-4">
-                <span className={`px-2.5 py-1 rounded-full font-mono text-[0.62rem] tracking-wide
-                  ${c.featured
-                    ? 'bg-neon-500/10 border border-neon-500/30 text-neon-500'
-                    : 'bg-plasma-700/15 border border-plasma-600/25 text-plasma-400'}`}>
-                  {c.level.replace('⭐ ', '')}
-                </span>
-              </td>
-              <td className="px-5 py-4 font-mono text-[0.72rem] text-slate-400">{c.badge}</td>
-              <td className="px-5 py-4">
-                <a href="#contact"
-                  className="px-3 py-1.5 font-mono text-[0.65rem] tracking-wide uppercase
-                    border border-plasma-600/30 text-plasma-400 rounded hover:border-neon-500/50
-                    hover:text-neon-500 transition-all duration-150 whitespace-nowrap">
-                  Enroll →
-                </a>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-}
+const tagBarStyle = {
+  Industry:  'linear-gradient(90deg, #00b4ff, transparent)',
+  Technical: 'linear-gradient(90deg, #60a5fa, transparent)',
+  Career:    'linear-gradient(90deg, #22d3ee, transparent)',
+};
 
-function ExtraServiceCard({ s, i }) {
-  const [ref, inView] = useInView({ threshold: 0.1 });
+const topics = ['ALL', 'INDUSTRY', 'TECHNICAL', 'CAREER'];
+
+function ArticleCard({ article, i, featured = false }) {
+  const [ref, inView] = useInView({ threshold: 0.08 });
   return (
     <div ref={ref}
-      className={`glass-card rounded-xl p-7 card-hover transition-all duration-500
-        ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
-      style={{ transitionDelay: `${i * 80}ms` }}>
-      <div className="flex items-start justify-between mb-4">
-        <span className="text-2xl">{s.icon}</span>
-        <span className="px-2.5 py-1 rounded-full font-mono text-[0.62rem] tracking-wide
-          bg-neon-500/10 border border-neon-500/25 text-neon-500">
-          {s.tag}
-        </span>
+      className={`relative overflow-hidden transition-all duration-150 cursor-pointer ${featured ? 'md:col-span-2' : ''}`}
+      style={{
+        background: 'rgba(4,16,32,0.9)',
+        border: '1px solid rgba(0,180,255,0.12)',
+        opacity: inView ? 1 : 0,
+        transform: inView ? 'translateY(0)' : 'translateY(20px)',
+        transition: `opacity 0.5s ease ${i * 80}ms, transform 0.5s ease ${i * 80}ms, border-color 0.15s, background 0.15s`,
+      }}
+      onMouseEnter={e => { e.currentTarget.style.borderColor='rgba(0,180,255,0.4)'; e.currentTarget.style.background='rgba(7,22,40,0.95)'; }}
+      onMouseLeave={e => { e.currentTarget.style.borderColor='rgba(0,180,255,0.12)'; e.currentTarget.style.background='rgba(4,16,32,0.9)'; }}>
+
+      {/* color bar */}
+      <div className="absolute top-0 left-0 right-0 h-px"
+        style={{ background: tagBarStyle[article.tag] }} />
+
+      <div className={`p-6 ${featured ? 'lg:flex lg:gap-10 lg:items-start' : ''}`}>
+        <div className={featured ? 'lg:flex-1' : ''}>
+          {/* meta */}
+          <div className="flex items-center gap-3 mb-4 flex-wrap">
+            <span className="font-mono text-[0.58rem] tracking-[2px] px-2 py-0.5"
+              style={tagStyle[article.tag]}>{article.tag.toUpperCase()}</span>
+            <span className="font-mono text-[0.6rem]"
+              style={{ color: 'rgba(0,180,255,0.35)' }}>{article.date}</span>
+            <span className="font-mono text-[0.6rem]"
+              style={{ color: 'rgba(0,180,255,0.25)' }}>· {article.read} read</span>
+          </div>
+
+          <h3 className={`font-mono text-white leading-snug mb-3 ${featured ? 'text-lg' : 'text-[0.85rem]'}`}>
+            {article.title}
+          </h3>
+          <p className="font-mono text-[0.7rem] leading-relaxed mb-5"
+            style={{ color: 'rgba(168,200,224,0.5)' }}>{article.excerpt}</p>
+
+          <span className="font-mono text-[0.65rem] tracking-widest uppercase transition-colors duration-150"
+            style={{ color: 'rgba(0,180,255,0.6)' }}
+            onMouseEnter={e => e.target.style.color='#00b4ff'}
+            onMouseLeave={e => e.target.style.color='rgba(0,180,255,0.6)'}>
+            READ MORE →
+          </span>
+        </div>
       </div>
-      <h3 className="font-orbitron font-semibold text-[0.95rem] text-slate-100 mb-2">{s.title}</h3>
-      <p className="text-sm text-slate-500 leading-relaxed mb-5">{s.desc}</p>
-      <ul className="flex flex-col gap-2">
-        {s.points.map(pt => (
-          <li key={pt} className="flex gap-2 items-center text-sm text-slate-400">
-            <span className="text-neon-500 font-mono text-xs flex-shrink-0">✓</span>
-            {pt}
-          </li>
-        ))}
-      </ul>
     </div>
   );
 }
 
-export default function ServicesPage() {
+export default function InsightsPage() {
+  const [active, setActive] = useState('ALL');
+  const [email, setEmail] = useState('');
+  const [subbed, setSubbed] = useState(false);
+  const [nRef, nInView] = useInView({ threshold: 0.1 });
+
+  const filtered = active === 'ALL'
+    ? articles
+    : articles.filter(a => a.tag.toUpperCase() === active);
+
+  const inputStyle = {
+    background: '#010812',
+    border: '1px solid rgba(0,180,255,0.2)',
+    color: '#e2e8f0',
+    fontFamily: "'Share Tech Mono', monospace",
+    fontSize: '0.75rem',
+    padding: '10px 16px',
+    outline: 'none',
+    width: '260px',
+  };
+
   return (
     <>
       <PageHero
-        tag="// What We Offer"
-        title={<>Training Programs<br />Built for the Industry</>}
-        subtitle="From foundational RTL to full tapeout flows — every program is crafted with active semiconductor engineers and updated quarterly."
+        tag="// KNOWLEDGE HUB"
+        title={<>VLSI Insights &<br />Industry Pulse</>}
+        subtitle="Technical deep-dives, career guides, and semiconductor industry analysis — written by working engineers, for engineers."
       />
 
-      <div className="relative z-10 py-16 px-6 lg:px-16 max-w-7xl mx-auto space-y-20">
+      <div className="relative z-10 py-16 px-6 lg:px-16 max-w-7xl mx-auto"
+        style={{ display: 'flex', flexDirection: 'column', gap: '40px' }}>
 
-        {/* Course table */}
-        <div>
-          <div className="mb-8">
-            <span className="font-mono text-[0.72rem] tracking-[4px] uppercase text-neon-500 block mb-2">// Certification Courses</span>
-            <h2 className="font-orbitron font-bold text-gradient-plasma" style={{ fontSize: 'clamp(1.4rem, 2vw, 1.9rem)' }}>
-              All Programs at a Glance
-            </h2>
+        {/* Filter + search */}
+        <div className="flex items-center gap-3 flex-wrap"
+          style={{ borderBottom: '1px solid rgba(0,180,255,0.08)', paddingBottom: '20px' }}>
+          {topics.map(t => (
+            <button key={t} onClick={() => setActive(t)}
+              className="font-mono text-[0.65rem] tracking-[3px] px-4 py-2 transition-all duration-150"
+              style={{
+                border: active === t ? '1px solid rgba(0,180,255,0.6)' : '1px solid rgba(0,180,255,0.15)',
+                color: active === t ? '#00b4ff' : 'rgba(0,180,255,0.4)',
+                background: active === t ? 'rgba(0,180,255,0.08)' : 'transparent',
+              }}>
+              {t}
+            </button>
+          ))}
+          <div className="ml-auto">
+            <input type="text" placeholder="Search articles..."
+              style={inputStyle}
+              onFocus={e => e.target.style.borderColor='rgba(0,180,255,0.5)'}
+              onBlur={e => e.target.style.borderColor='rgba(0,180,255,0.2)'} />
           </div>
-          <CourseTable />
         </div>
 
-        {/* Extra services */}
-        <div>
-          <div className="text-center mb-10">
-            <span className="font-mono text-[0.72rem] tracking-[4px] uppercase text-neon-500 block mb-2">// Beyond Courses</span>
-            <h2 className="font-orbitron font-bold text-gradient-plasma" style={{ fontSize: 'clamp(1.6rem, 2.5vw, 2.2rem)' }}>
-              More Ways We Help
-            </h2>
+        {/* Featured */}
+        {active === 'ALL' && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <ArticleCard article={articles[0]} i={0} featured />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {extraServices.map((s, i) => <ExtraServiceCard key={s.title} s={s} i={i} />)}
-          </div>
+        )}
+
+        {/* Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {(active === 'ALL' ? filtered.slice(1) : filtered).map((a, i) => (
+            <ArticleCard key={a.id} article={a} i={i + 1} />
+          ))}
         </div>
 
-        {/* Tool access banner */}
-        <SectionCard className="text-center hover:border-neon-500/30">
-          <div className="text-3xl mb-4">🖥</div>
-          <h3 className="font-orbitron font-bold text-xl text-slate-100 mb-3">Licensed EDA Tool Access — Included</h3>
-          <p className="text-slate-400 text-sm max-w-xl mx-auto leading-relaxed mb-6">
-            Every enrolled student gets cloud + lab access to the full Synopsys, Cadence, and Mentor tool suite.
-            No extra fees. Same tools used by engineers at Intel, Qualcomm, and TSMC.
+        {/* Newsletter */}
+        <div ref={nRef} className="relative p-8 text-center overflow-hidden"
+          style={{
+            background: 'rgba(4,16,32,0.9)',
+            border: '1px solid rgba(0,180,255,0.15)',
+            opacity: nInView ? 1 : 0,
+            transform: nInView ? 'translateY(0)' : 'translateY(20px)',
+            transition: 'all 0.6s ease',
+          }}>
+          <div className="absolute top-0 inset-x-0 h-px"
+            style={{ background: 'linear-gradient(90deg, transparent, #00b4ff, transparent)' }} />
+          <div className="text-3xl mb-3">📡</div>
+          <h3 className="font-mono text-lg text-white mb-2">Stay Ahead of the Curve</h3>
+          <div className="w-10 h-px mx-auto mb-4" style={{ background: 'rgba(0,180,255,0.4)' }} />
+          <p className="font-mono text-[0.72rem] max-w-md mx-auto leading-relaxed mb-6"
+            style={{ color: 'rgba(168,200,224,0.55)' }}>
+            Weekly VLSI insights, industry news, and job alerts — straight to your inbox. No spam, unsubscribe anytime.
           </p>
-          <div className="flex flex-wrap justify-center gap-3">
-            {['Synopsys DC', 'Cadence Innovus', 'PrimeTime', 'Calibre', 'Virtuoso', 'VCS', 'Questasim', 'SpyGlass'].map(t => (
-              <span key={t} className="px-3 py-1 rounded font-mono text-[0.68rem] tracking-wide
-                bg-plasma-700/15 border border-plasma-600/25 text-plasma-400">
-                {t}
-              </span>
-            ))}
-          </div>
-        </SectionCard>
+          {subbed ? (
+            <div className="font-mono text-sm" style={{ color: '#00b4ff' }}>
+              ✓ YOU'RE SUBSCRIBED
+            </div>
+          ) : (
+            <div className="flex gap-3 justify-center flex-wrap">
+              <input type="email" placeholder="your@email.com"
+                style={inputStyle}
+                value={email} onChange={e => setEmail(e.target.value)}
+                onFocus={e => e.target.style.borderColor='rgba(0,180,255,0.5)'}
+                onBlur={e => e.target.style.borderColor='rgba(0,180,255,0.2)'} />
+              <button onClick={() => email && setSubbed(true)}
+                className="font-mono text-xs tracking-widest uppercase px-6 py-2.5 transition-all duration-150"
+                style={{ border: '1px solid rgba(0,180,255,0.5)', color: '#00b4ff', background: 'rgba(0,180,255,0.06)' }}
+                onMouseEnter={e => e.currentTarget.style.background='rgba(0,180,255,0.14)'}
+                onMouseLeave={e => e.currentTarget.style.background='rgba(0,180,255,0.06)'}>
+                [ SUBSCRIBE ]
+              </button>
+            </div>
+          )}
+        </div>
 
       </div>
-
-      <CTASection />
     </>
   );
 }

@@ -1,17 +1,21 @@
 import { useState } from 'react';
+import { submitContactEnquiry } from '../api/enquiry';
 import PageHero from '../components/shared/PageHero';
-import SectionCard from '../components/shared/SectionCard';
 import { Phone, Mail, MapPin, Clock, Send, CheckCircle } from 'lucide-react';
 
-const courses = ['RTL Design & Synthesis', 'Physical Design & STA', 'Functional Verification', 'Analog Layout Design', 'DFT & Low Power Design', 'VLSI Full-Stack Bootcamp', 'Corporate Training', 'Other'];
+const courses = [
+  'RTL Design & Synthesis', 'Physical Design & STA', 'Functional Verification',
+  'Analog Layout Design', 'DFT & Low Power Design', 'VLSI Full-Stack Bootcamp',
+  'Corporate Training', 'Other',
+];
 const modes = ['Weekday Batch', 'Weekend Batch', 'Online Live', '1-on-1 Mentorship'];
 
 const contactInfo = [
-  { icon: <Phone size={16}/>, label: 'Phone', value: '+91 80 1234 5678', sub: 'Mon–Sat, 9 AM – 7 PM' },
-  { icon: <Mail size={16}/>, label: 'Email', value: 'hello@nanocore.in', sub: 'We reply within 4 hours' },
-  { icon: <MapPin size={16}/>, label: 'Koramangala Center', value: '#42, 5th Block, Koramangala', sub: 'Bangalore – 560095' },
-  { icon: <MapPin size={16}/>, label: 'HSR Layout Center', value: '#18, Sector 1, HSR Layout', sub: 'Bangalore – 560102' },
-  { icon: <Clock size={16}/>, label: 'Lab Hours', value: 'Mon–Sat: 8 AM – 9 PM', sub: 'Sunday: 9 AM – 5 PM' },
+  { icon: <Phone size={15}/>, label: 'PHONE', value: '+91 80 1234 5678', sub: 'Mon–Sat, 9 AM – 7 PM' },
+  { icon: <Mail size={15}/>, label: 'EMAIL', value: 'hello@nanocore.in', sub: 'We reply within 4 hours' },
+  { icon: <MapPin size={15}/>, label: 'KORAMANGALA CENTER', value: '#42, 5th Block, Koramangala', sub: 'Bangalore – 560095' },
+  { icon: <MapPin size={15}/>, label: 'HSR LAYOUT CENTER', value: '#18, Sector 1, HSR Layout', sub: 'Bangalore – 560102' },
+  { icon: <Clock size={15}/>, label: 'LAB HOURS', value: 'Mon–Sat: 8 AM – 9 PM', sub: 'Sunday: 9 AM – 5 PM' },
 ];
 
 const faqs = [
@@ -22,119 +26,182 @@ const faqs = [
   { q: 'Do you offer EMI or payment plans?', a: 'Yes. We offer 3, 6, and 12-month EMI options with 0% interest through our banking partners. Contact us for details.' },
 ];
 
+const inputBase = {
+  background: '#010812',
+  border: '1px solid rgba(0,180,255,0.18)',
+  color: '#e2e8f0',
+  outline: 'none',
+  fontFamily: "'Share Tech Mono', monospace",
+  fontSize: '0.8rem',
+  width: '100%',
+  padding: '10px 14px',
+  transition: 'border-color 0.15s ease',
+};
+const inputFocus = { borderColor: 'rgba(0,180,255,0.55)' };
+const inputBlur  = { borderColor: 'rgba(0,180,255,0.18)' };
+
+const labelStyle = {
+  display: 'block',
+  fontFamily: "'Share Tech Mono', monospace",
+  fontSize: '0.6rem',
+  letterSpacing: '3px',
+  textTransform: 'uppercase',
+  color: 'rgba(0,180,255,0.5)',
+  marginBottom: '6px',
+};
+
+function Field({ label, children }) {
+  return (
+    <div>
+      <label style={labelStyle}>{label}</label>
+      {children}
+    </div>
+  );
+}
+
 function ContactForm() {
   const [form, setForm] = useState({ name: '', email: '', phone: '', course: '', mode: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    setTimeout(() => { setLoading(false); setSubmitted(true); }, 1200);
+    setLoading(true); setError('');
+    try {
+      await submitContactEnquiry(form);
+      setSubmitted(true);
+    } catch (err) {
+      setError(err.message || 'Something went wrong. Please try again or call us directly.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (submitted) {
     return (
       <div className="flex flex-col items-center justify-center text-center py-16 gap-4">
-        <CheckCircle size={48} className="text-neon-500" />
-        <h3 className="font-orbitron font-bold text-xl text-slate-100">Message Received!</h3>
-        <p className="text-slate-400 text-sm max-w-xs">
-          Our counsellor will reach out within 4 business hours. Check your email for a confirmation.
+        <CheckCircle size={40} style={{ color: '#00b4ff' }} />
+        <h3 className="font-mono text-white tracking-widest text-lg">MESSAGE RECEIVED</h3>
+        <p className="font-mono text-sm leading-relaxed max-w-xs" style={{ color: 'rgba(168,200,224,0.7)' }}>
+          Our counsellor will reach out within{' '}
+          <span style={{ color: '#00b4ff' }}>4 business hours.</span>
         </p>
-        <button
-          onClick={() => setSubmitted(false)}
-          className="mt-2 font-mono text-xs text-plasma-400 hover:text-neon-500 transition-colors underline">
-          Send another message
+        <button onClick={() => setSubmitted(false)}
+          className="font-mono text-xs mt-2 transition-colors"
+          style={{ color: 'rgba(0,180,255,0.5)', letterSpacing: '2px' }}
+          onMouseEnter={e => e.target.style.color='#00b4ff'}
+          onMouseLeave={e => e.target.style.color='rgba(0,180,255,0.5)'}>
+          ← SEND ANOTHER MESSAGE
         </button>
       </div>
     );
   }
 
-  const fieldClass = `w-full px-4 py-3 font-exo text-sm rounded-lg bg-space-800/60
-    border border-plasma-700/25 text-slate-200 placeholder-slate-600
-    focus:outline-none focus:border-plasma-500/50 focus:bg-space-800/90 transition-all duration-200`;
-
-  const labelClass = 'block font-mono text-[0.68rem] tracking-[2px] uppercase text-white mb-1.5';
-
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-        <div>
-          <label className={labelClass}>Full Name *</label>
-          <input required type="text" placeholder="Arjun Sharma" className={fieldClass}
+    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+        <Field label="Full Name *">
+          <input required type="text" placeholder="Arjun Sharma"
+            style={inputBase}
+            onFocus={e => Object.assign(e.target.style, inputFocus)}
+            onBlur={e => Object.assign(e.target.style, inputBlur)}
             value={form.name} onChange={e => setForm({...form, name: e.target.value})} />
-        </div>
-        <div>
-          <label className={labelClass}>Email *</label>
-          <input required type="email" placeholder="arjun@email.com" className={fieldClass}
+        </Field>
+        <Field label="Email *">
+          <input required type="email" placeholder="arjun@email.com"
+            style={inputBase}
+            onFocus={e => Object.assign(e.target.style, inputFocus)}
+            onBlur={e => Object.assign(e.target.style, inputBlur)}
             value={form.email} onChange={e => setForm({...form, email: e.target.value})} />
-        </div>
+        </Field>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-        <div>
-          <label className={labelClass}>Phone Number</label>
-          <input type="tel" placeholder="+91 98765 43210" className={fieldClass}
+
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+        <Field label="Phone Number">
+          <input type="tel" placeholder="+91 98765 43210"
+            style={inputBase}
+            onFocus={e => Object.assign(e.target.style, inputFocus)}
+            onBlur={e => Object.assign(e.target.style, inputBlur)}
             value={form.phone} onChange={e => setForm({...form, phone: e.target.value})} />
-        </div>
-        <div>
-          <label className={labelClass}>Interested Course</label>
-          <select className={`${fieldClass} cursor-pointer`}
+        </Field>
+        <Field label="Interested Course">
+          <select style={{ ...inputBase, cursor: 'pointer' }}
+            onFocus={e => Object.assign(e.target.style, inputFocus)}
+            onBlur={e => Object.assign(e.target.style, inputBlur)}
             value={form.course} onChange={e => setForm({...form, course: e.target.value})}>
-            <option value="" className="bg-space-800">Select a course…</option>
-            {courses.map(c => <option key={c} value={c} className="bg-space-800">{c}</option>)}
+            <option value="" style={{ background: '#010812', color: '#4a7fa8' }}>Select a course…</option>
+            {courses.map(c => <option key={c} value={c} style={{ background: '#010812', color: '#e2e8f0' }}>{c}</option>)}
           </select>
-        </div>
+        </Field>
       </div>
-      <div>
-        <label className={labelClass}>Preferred Mode</label>
-        <div className="flex flex-wrap gap-3">
+
+      <Field label="Preferred Mode">
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginTop: '4px' }}>
           {modes.map(m => (
             <button type="button" key={m}
               onClick={() => setForm({...form, mode: m})}
-              className={`px-3 py-1.5 font-mono text-[0.68rem] tracking-wide rounded-lg border transition-all duration-150
-                ${form.mode === m
-                  ? 'bg-plasma-700/25 border-plasma-500/50 text-plasma-300'
-                  : 'border-plasma-700/20 text-white hover:border-plasma-600/35 hover:text-plasma-400'}`}>
+              className="font-mono text-xs transition-all duration-150"
+              style={{
+                padding: '6px 14px',
+                letterSpacing: '1px',
+                border: form.mode === m ? '1px solid rgba(0,180,255,0.6)' : '1px solid rgba(0,180,255,0.18)',
+                background: form.mode === m ? 'rgba(0,180,255,0.1)' : 'transparent',
+                color: form.mode === m ? '#00b4ff' : 'rgba(168,200,224,0.4)',
+              }}>
               {m}
             </button>
           ))}
         </div>
-      </div>
-      <div>
-        <label className={labelClass}>Message</label>
+      </Field>
+
+      <Field label="Message">
         <textarea rows={4} placeholder="Tell us about your background, goals, or any questions..."
-          className={`${fieldClass} resize-none`}
+          style={{ ...inputBase, resize: 'none', lineHeight: '1.6' }}
+          onFocus={e => Object.assign(e.target.style, inputFocus)}
+          onBlur={e => Object.assign(e.target.style, inputBlur)}
           value={form.message} onChange={e => setForm({...form, message: e.target.value})} />
-      </div>
+      </Field>
+
+      {error && (
+        <div className="font-mono text-xs text-center py-2.5 px-4"
+          style={{ border: '1px solid rgba(239,68,68,0.3)', background: 'rgba(239,68,68,0.05)', color: '#f87171' }}>
+          {error}
+        </div>
+      )}
+
       <button type="submit" disabled={loading}
-        className="flex items-center justify-center gap-2 px-6 py-3.5 font-exo font-bold
-          text-sm tracking-wider uppercase bg-gradient-to-r from-plasma-600 to-neon-700
-          text-white rounded hover:shadow-[0_0_30px_rgba(124,58,237,0.55)]
-          hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed
-          transition-all duration-200">
-        {loading ? (
-          <><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Sending…</>
-        ) : (
-          <><Send size={15} /> Send Enquiry</>
-        )}
+        className="flex items-center justify-center gap-2 w-full py-3.5 font-mono text-xs tracking-widest uppercase
+          transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+        style={{ border: '1px solid rgba(0,180,255,0.5)', background: 'rgba(0,180,255,0.07)', color: '#00b4ff' }}
+        onMouseEnter={e => { if (!loading) e.currentTarget.style.background = 'rgba(0,180,255,0.14)'; }}
+        onMouseLeave={e => { if (!loading) e.currentTarget.style.background = 'rgba(0,180,255,0.07)'; }}>
+        {loading
+          ? <><span className="w-4 h-4 rounded-full border border-electric/30 border-t-electric animate-spin" style={{ borderTopColor: '#00b4ff', borderColor: 'rgba(0,180,255,0.2)' }} /> SENDING...</>
+          : <><Send size={13} /> [ SEND ENQUIRY ]</>}
       </button>
     </form>
   );
 }
 
-function FAQItem({ faq, i }) {
+function FAQItem({ faq }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="border border-plasma-700/20 rounded-xl overflow-hidden">
+    <div style={{ border: '1px solid rgba(0,180,255,0.12)', background: 'rgba(4,16,32,0.7)' }}>
       <button onClick={() => setOpen(o => !o)}
-        className="w-full flex items-center justify-between gap-4 px-6 py-4 text-left
-          hover:bg-plasma-700/8 transition-colors duration-200">
-        <span className="font-exo font-semibold text-[0.88rem] text-slate-200">{faq.q}</span>
-        <span className={`font-mono text-plasma-400 text-lg flex-shrink-0 transition-transform duration-200
-          ${open ? 'rotate-45' : ''}`}>+</span>
+        className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left group"
+        style={{ background: 'transparent' }}
+        onMouseEnter={e => e.currentTarget.style.background='rgba(0,180,255,0.04)'}
+        onMouseLeave={e => e.currentTarget.style.background='transparent'}>
+        <span className="font-mono text-xs text-white" style={{ letterSpacing: '0.5px' }}>{faq.q}</span>
+        <span className="font-mono flex-shrink-0 transition-transform duration-200 text-electric text-lg"
+          style={{ transform: open ? 'rotate(45deg)' : 'none', color: '#00b4ff' }}>+</span>
       </button>
-      <div className={`overflow-hidden transition-all duration-300 ${open ? 'max-h-48' : 'max-h-0'}`}>
-        <p className="px-6 pb-5 text-sm text-slate-500 leading-relaxed border-t border-plasma-700/15 pt-4">{faq.a}</p>
+      <div style={{ maxHeight: open ? '200px' : '0', overflow: 'hidden', transition: 'max-height 0.3s ease' }}>
+        <p className="font-mono text-xs leading-relaxed px-5 pb-5 pt-3"
+          style={{ color: 'rgba(168,200,224,0.6)', borderTop: '1px solid rgba(0,180,255,0.08)' }}>
+          {faq.a}
+        </p>
       </div>
     </div>
   );
@@ -144,48 +211,50 @@ export default function ContactPage() {
   return (
     <>
       <PageHero
-        tag="// Get in Touch"
+        tag="// GET IN TOUCH"
         title={<>Let's Find the Right<br />Program for You</>}
         subtitle="Our counsellors are VLSI engineers themselves — they'll give you honest advice on which course matches your background and goals."
       />
 
-      <div className="relative z-10 py-16 px-6 lg:px-16 max-w-7xl mx-auto space-y-20">
+      <div className="relative z-10 py-16 px-6 lg:px-16 max-w-7xl mx-auto" style={{ display: 'flex', flexDirection: 'column', gap: '80px' }}>
 
         {/* Main grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
-
-          {/* Form */}
-          <div className="lg:col-span-3">
-            <SectionCard className="hover:border-plasma-500/30">
-              <span className="font-mono text-[0.68rem] tracking-[3px] uppercase text-neon-500 block mb-5">// Send Enquiry</span>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '24px' }}
+          className="lg:grid-cols-5">
+          <div className="lg:col-span-3" style={{ gridColumn: 'span 3' }}>
+            <div style={{ border: '1px solid rgba(0,180,255,0.15)', background: 'rgba(4,16,32,0.85)', padding: '32px' }}>
+              <div className="font-mono mb-6" style={{ fontSize: '0.62rem', letterSpacing: '4px', color: 'rgba(0,180,255,0.6)', textTransform: 'uppercase' }}>
+                // SEND ENQUIRY
+              </div>
               <ContactForm />
-            </SectionCard>
+            </div>
           </div>
 
-          {/* Info */}
-          <div className="lg:col-span-2 flex flex-col gap-5">
+          {/* Info cards */}
+          <div className="lg:col-span-2" style={{ gridColumn: 'span 2', display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {contactInfo.map((c, i) => (
-              <SectionCard key={c.label} delay={i * 60} className="hover:border-neon-500/25 !p-5">
-                <div className="flex gap-4 items-start">
-                  <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0
-                    bg-plasma-700/15 border border-plasma-600/25 text-plasma-400">
-                    {c.icon}
-                  </div>
-                  <div>
-                    <div className="font-mono text-[0.62rem] tracking-[2px] uppercase text-slate-600 mb-0.5">{c.label}</div>
-                    <div className="font-exo font-medium text-sm text-slate-200">{c.value}</div>
-                    <div className="font-mono text-[0.65rem] text-slate-500 mt-0.5">{c.sub}</div>
-                  </div>
+              <div key={c.label} className="flex gap-4 items-start p-4 group transition-all duration-200"
+                style={{ border: '1px solid rgba(0,180,255,0.1)', background: 'rgba(4,16,32,0.7)' }}
+                onMouseEnter={e => e.currentTarget.style.borderColor='rgba(0,180,255,0.3)'}
+                onMouseLeave={e => e.currentTarget.style.borderColor='rgba(0,180,255,0.1)'}>
+                <div className="flex-shrink-0 w-9 h-9 flex items-center justify-center"
+                  style={{ border: '1px solid rgba(0,180,255,0.2)', background: 'rgba(0,180,255,0.06)', color: '#00b4ff' }}>
+                  {c.icon}
                 </div>
-              </SectionCard>
+                <div>
+                  <div className="font-mono mb-0.5" style={{ fontSize: '0.58rem', letterSpacing: '2px', color: 'rgba(0,180,255,0.4)', textTransform: 'uppercase' }}>{c.label}</div>
+                  <div className="font-mono text-sm text-white">{c.value}</div>
+                  <div className="font-mono mt-0.5" style={{ fontSize: '0.65rem', color: 'rgba(168,200,224,0.4)' }}>{c.sub}</div>
+                </div>
+              </div>
             ))}
 
-            {/* WhatsApp CTA */}
-            <a href="https://wa.me/918459154708" target="_blank" rel="noreferrer"
-              className="flex items-center justify-center gap-2 py-3.5 rounded-xl font-exo font-semibold text-sm
-                tracking-wide border border-neon-500/40 text-neon-500
-                hover:bg-neon-500/8 hover:border-neon-500 transition-all duration-200 text-center">
-              💬 Chat on WhatsApp
+            <a href="https://wa.me/918012345678" target="_blank" rel="noreferrer"
+              className="flex items-center justify-center gap-2 py-3.5 font-mono text-xs tracking-widest uppercase transition-all duration-200"
+              style={{ border: '1px solid rgba(37,211,102,0.4)', color: '#25d366', background: 'transparent' }}
+onMouseEnter={e => e.currentTarget.style.background='rgba(37,211,102,0.08)'}
+onMouseLeave={e => e.currentTarget.style.background='transparent'}>
+              💬 [ CHAT ON WHATSAPP ]
             </a>
           </div>
         </div>
@@ -193,13 +262,11 @@ export default function ContactPage() {
         {/* FAQs */}
         <div>
           <div className="text-center mb-10">
-            <span className="font-mono text-[0.72rem] tracking-[4px] uppercase text-neon-500 block mb-2">// FAQs</span>
-            <h2 className="font-orbitron font-bold text-gradient-plasma" style={{ fontSize: 'clamp(1.6rem, 2.5vw, 2.2rem)' }}>
-              Common Questions
-            </h2>
+            <div className="font-mono mb-2" style={{ fontSize: '0.62rem', letterSpacing: '4px', color: 'rgba(0,180,255,0.6)', textTransform: 'uppercase' }}>// FAQS</div>
+            <h2 className="font-mono text-white" style={{ fontSize: 'clamp(1.4rem, 2.5vw, 2rem)' }}>Common Questions</h2>
           </div>
-          <div className="max-w-3xl mx-auto flex flex-col gap-3">
-            {faqs.map((f, i) => <FAQItem key={i} faq={f} i={i} />)}
+          <div style={{ maxWidth: '768px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            {faqs.map((f, i) => <FAQItem key={i} faq={f} />)}
           </div>
         </div>
 
