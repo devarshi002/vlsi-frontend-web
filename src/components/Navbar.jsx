@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, ChevronDown, Target, Eye, Star } from 'lucide-react';
-
+import COMPANY from '../config/company';
 const homeDropItems = [
   { href: '/#vision',  icon: <Eye size={13} />,   label: 'VISION',      desc: 'Where we are headed' },
   { href: '/#mission', icon: <Target size={13} />, label: 'MISSION',     desc: 'Our purpose & commitment' },
@@ -117,11 +117,11 @@ export default function Navbar() {
         {/* Logo */}
         <Link to="/" className="flex flex-col leading-none flex-shrink-0">
           <div className="flex items-center gap-0">
-            <span className="text-white text-sm tracking-[3px] font-mono">NANO</span>
-            <span className="text-electric text-sm tracking-[3px] font-mono">CORE</span>
+            <span className="text-white text-sm tracking-[3px] font-mono">Anve</span>
+            <span className="text-electric text-sm tracking-[3px] font-mono">yantra</span>
           </div>
           <span className="text-[0.48rem] tracking-[4px] text-steel-500 uppercase mt-0.5">
-            VLSI Training Institute
+            {COMPANY.tagline}
           </span>
         </Link>
 

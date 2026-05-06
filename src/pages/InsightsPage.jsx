@@ -1,9 +1,9 @@
+import { useState } from 'react';
 import PageHero from '../components/shared/PageHero';
-import SectionCard from '../components/shared/SectionCard';
 import { useInView } from '../hooks/useInView';
 
 const articles = [
-  { id: 1, tag: 'Industry', title: 'India\'s Semiconductor Mission: What It Means for VLSI Engineers in 2025', date: 'Apr 18, 2025', read: '6 min read', excerpt: 'The ₹76,000 crore India Semiconductor Mission is creating thousands of new VLSI jobs. Here\'s what skills are in demand and how to position yourself.', featured: true },
+  { id: 1, tag: 'Industry', title: "India's Semiconductor Mission: What It Means for VLSI Engineers in 2025", date: 'Apr 18, 2025', read: '6 min read', excerpt: "The ₹76,000 crore India Semiconductor Mission is creating thousands of new VLSI jobs. Here's what skills are in demand and how to position yourself.", featured: true },
   { id: 2, tag: 'Technical', title: 'RTL to GDSII: The Complete Chip Design Flow Explained', date: 'Apr 10, 2025', read: '12 min read', excerpt: 'A comprehensive walkthrough of every stage in the digital IC design flow, from RTL coding to tapeout — with tool names at each step.' },
   { id: 3, tag: 'Career', title: 'How to Crack a VLSI Physical Design Interview at Qualcomm', date: 'Mar 28, 2025', read: '8 min read', excerpt: 'Our placement team compiled the most common PD interview questions asked at top semiconductor companies, with detailed answers.' },
   { id: 4, tag: 'Technical', title: 'UVM vs Traditional Testbench: When to Use What', date: 'Mar 15, 2025', read: '9 min read', excerpt: 'A practical comparison of UVM-based and traditional directed testbenches — trade-offs, use cases, and when the overhead is worth it.' },
@@ -13,48 +13,175 @@ const articles = [
   { id: 8, tag: 'Technical', title: 'Low Power Design Techniques Every VLSI Engineer Should Know', date: 'Jan 25, 2025', read: '11 min read', excerpt: 'Clock gating, power gating, multi-Vt, and dynamic voltage scaling — practical techniques with real impact on silicon power consumption.' },
 ];
 
-const tagColors = {
-  Industry: 'bg-neon-500/10 border-neon-500/30 text-neon-500',
-  Technical: 'bg-plasma-700/15 border-plasma-600/30 text-plasma-400',
-  Career: 'bg-[#22d3ee]/10 border-[#22d3ee]/30 text-[#22d3ee]',
+const tagConfig = {
+  Industry: { color: '#22d3ee', bg: 'rgba(34,211,238,0.08)', border: 'rgba(34,211,238,0.25)', label: 'INDUSTRY' },
+  Technical: { color: '#818cf8', bg: 'rgba(129,140,248,0.08)', border: 'rgba(129,140,248,0.25)', label: 'TECHNICAL' },
+  Career:    { color: '#34d399', bg: 'rgba(52,211,153,0.08)', border: 'rgba(52,211,153,0.25)', label: 'CAREER' },
 };
 
 const topics = ['All', 'Industry', 'Technical', 'Career'];
 
-function ArticleCard({ article, i, featured = false }) {
-  const [ref, inView] = useInView({ threshold: 0.1 });
+function Tag({ tag }) {
+  const cfg = tagConfig[tag];
   return (
-    <div ref={ref}
-      className={`glass-card rounded-xl overflow-hidden card-hover cursor-pointer transition-all duration-500
-        ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}
-        ${featured ? 'md:col-span-2' : ''}`}
-      style={{ transitionDelay: `${i * 80}ms` }}>
-      {/* Color bar */}
-      <div className={`h-0.5 ${article.tag === 'Technical' ? 'bg-gradient-to-r from-plasma-600 to-plasma-400' : article.tag === 'Career' ? 'bg-gradient-to-r from-[#22d3ee] to-plasma-400' : 'bg-gradient-to-r from-neon-500 to-[#22d3ee]'}`} />
-      <div className={`p-7 ${featured ? 'lg:flex lg:gap-8 lg:items-center' : ''}`}>
-        <div className={featured ? 'lg:flex-1' : ''}>
-          <div className="flex items-center gap-3 mb-4">
-            <span className={`px-2.5 py-1 rounded-full font-mono text-[0.62rem] tracking-wide border ${tagColors[article.tag]}`}>
-              {article.tag}
-            </span>
-            <span className="font-mono text-[0.65rem] text-slate-600">{article.date}</span>
-            <span className="font-mono text-[0.65rem] text-slate-600">· {article.read}</span>
-          </div>
-          <h3 className={`font-orbitron font-bold text-slate-100 leading-snug mb-3
-            ${featured ? 'text-xl' : 'text-[0.9rem]'}`}>
-            {article.title}
-          </h3>
-          <p className="text-sm text-slate-500 leading-relaxed mb-4">{article.excerpt}</p>
-          <span className="font-mono text-[0.72rem] text-neon-500 hover:text-neon-400 transition-colors">
-            Read More →
+    <span style={{
+      color: cfg.color,
+      background: cfg.bg,
+      border: `1px solid ${cfg.border}`,
+      padding: '2px 10px',
+      borderRadius: '4px',
+      fontSize: '0.6rem',
+      fontFamily: 'Share Tech Mono, monospace',
+      letterSpacing: '0.12em',
+      fontWeight: 600,
+    }}>
+      {cfg.label}
+    </span>
+  );
+}
+
+function FeaturedCard({ article }) {
+  const [ref, inView] = useInView({ threshold: 0.1 });
+  const cfg = tagConfig[article.tag];
+  return (
+    <div ref={ref} style={{
+      opacity: inView ? 1 : 0,
+      transform: inView ? 'translateY(0)' : 'translateY(24px)',
+      transition: 'all 0.6s ease',
+      background: 'linear-gradient(135deg, rgba(10,22,50,0.95) 0%, rgba(6,14,35,0.98) 100%)',
+      border: `1px solid rgba(56,100,200,0.2)`,
+      borderLeft: `3px solid ${cfg.color}`,
+      borderRadius: '12px',
+      padding: '2rem 2.5rem',
+      display: 'grid',
+      gridTemplateColumns: '1fr auto',
+      gap: '2rem',
+      alignItems: 'center',
+      cursor: 'pointer',
+      position: 'relative',
+      overflow: 'hidden',
+    }}
+    onMouseEnter={e => e.currentTarget.style.borderColor = `rgba(56,100,200,0.45)`}
+    onMouseLeave={e => e.currentTarget.style.borderColor = `rgba(56,100,200,0.2)`}
+    >
+      {/* Glow */}
+      <div style={{
+        position: 'absolute', top: 0, left: 0, right: 0, height: '1px',
+        background: `linear-gradient(90deg, transparent, ${cfg.color}40, transparent)`,
+      }} />
+
+      <div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '14px' }}>
+          <span style={{
+            background: `${cfg.color}15`, border: `1px solid ${cfg.color}40`,
+            color: cfg.color, padding: '3px 10px', borderRadius: '4px',
+            fontSize: '0.6rem', fontFamily: 'Share Tech Mono, monospace',
+            letterSpacing: '0.12em',
+          }}>★ FEATURED</span>
+          <Tag tag={article.tag} />
+          <span style={{ fontFamily: 'Share Tech Mono, monospace', fontSize: '0.65rem', color: '#475569' }}>
+            {article.date} · {article.read}
           </span>
         </div>
+        <h2 style={{
+          fontFamily: 'Orbitron, monospace', fontWeight: 700,
+          fontSize: '1.3rem', color: '#e2e8f0', lineHeight: 1.4,
+          marginBottom: '12px', maxWidth: '600px',
+        }}>{article.title}</h2>
+        <p style={{ color: '#64748b', fontSize: '0.875rem', lineHeight: 1.7, maxWidth: '580px' }}>
+          {article.excerpt}
+        </p>
+        <div style={{
+          marginTop: '16px', display: 'inline-flex', alignItems: 'center', gap: '6px',
+          fontFamily: 'Share Tech Mono, monospace', fontSize: '0.72rem', color: cfg.color,
+        }}>
+          READ ARTICLE <span>→</span>
+        </div>
+      </div>
+
+      <div style={{
+        width: '80px', height: '80px', borderRadius: '50%',
+        border: `2px solid ${cfg.color}30`,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        flexShrink: 0,
+        background: `radial-gradient(circle, ${cfg.color}10, transparent)`,
+      }}>
+        <span style={{ fontSize: '2rem' }}>🇮🇳</span>
+      </div>
+    </div>
+  );
+}
+
+function ArticleCard({ article, i }) {
+  const [ref, inView] = useInView({ threshold: 0.1 });
+  const [hovered, setHovered] = useState(false);
+  const cfg = tagConfig[article.tag];
+
+  return (
+    <div ref={ref} style={{
+      opacity: inView ? 1 : 0,
+      transform: inView ? 'translateY(0)' : 'translateY(24px)',
+      transition: `all 0.5s ease ${i * 80}ms`,
+      background: hovered
+        ? 'linear-gradient(135deg, rgba(12,26,58,0.98), rgba(8,18,42,0.98))'
+        : 'linear-gradient(135deg, rgba(8,18,42,0.95), rgba(5,10,26,0.98))',
+      border: `1px solid ${hovered ? 'rgba(56,100,200,0.35)' : 'rgba(56,100,200,0.12)'}`,
+      borderTop: `2px solid ${hovered ? cfg.color : cfg.color + '40'}`,
+      borderRadius: '10px',
+      padding: '1.5rem',
+      cursor: 'pointer',
+      transition: 'all 0.3s ease',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '12px',
+    }}
+    onMouseEnter={() => setHovered(true)}
+    onMouseLeave={() => setHovered(false)}
+    >
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+        <Tag tag={article.tag} />
+        <span style={{ fontFamily: 'Share Tech Mono, monospace', fontSize: '0.62rem', color: '#475569' }}>
+          {article.date}
+        </span>
+        <span style={{ fontFamily: 'Share Tech Mono, monospace', fontSize: '0.62rem', color: '#334155' }}>
+          · {article.read}
+        </span>
+      </div>
+
+      <h3 style={{
+        fontFamily: 'Orbitron, monospace', fontWeight: 700,
+        fontSize: '0.82rem', color: hovered ? '#f1f5f9' : '#cbd5e1',
+        lineHeight: 1.5, transition: 'color 0.3s',
+      }}>{article.title}</h3>
+
+      <p style={{
+        color: '#475569', fontSize: '0.8rem', lineHeight: 1.65,
+        flex: 1,
+      }}>{article.excerpt}</p>
+
+      <div style={{
+        fontFamily: 'Share Tech Mono, monospace', fontSize: '0.68rem',
+        color: hovered ? cfg.color : '#334155',
+        transition: 'color 0.3s',
+        display: 'flex', alignItems: 'center', gap: '4px',
+      }}>
+        READ MORE →
       </div>
     </div>
   );
 }
 
 export default function InsightsPage() {
+  const [activeFilter, setActiveFilter] = useState('All');
+  const [search, setSearch] = useState('');
+
+  const filtered = articles.slice(1).filter(a => {
+    const matchFilter = activeFilter === 'All' || a.tag === activeFilter;
+    const matchSearch = a.title.toLowerCase().includes(search.toLowerCase()) ||
+                        a.excerpt.toLowerCase().includes(search.toLowerCase());
+    return matchFilter && matchSearch;
+  });
+
   return (
     <>
       <PageHero
@@ -63,65 +190,150 @@ export default function InsightsPage() {
         subtitle="Technical deep-dives, career guides, and semiconductor industry analysis — written by working engineers, for engineers."
       />
 
-      <div className="relative z-10 py-16 px-6 lg:px-16 max-w-7xl mx-auto">
+      <div style={{ position: 'relative', zIndex: 10, padding: '3rem 1.5rem 5rem', maxWidth: '1200px', margin: '0 auto' }}>
 
-        {/* Filter tabs */}
-        <div className="flex gap-3 mb-10 flex-wrap">
-          {topics.map((t, i) => (
-            <button key={t}
-              className={`px-4 py-2 font-mono text-[0.72rem] tracking-widest uppercase rounded-lg
-                border transition-all duration-200
-                ${i === 0
-                  ? 'bg-plasma-700/20 border-plasma-500/40 text-plasma-400'
-                  : 'border-plasma-700/20 text-slate-500 hover:border-plasma-600/30 hover:text-plasma-400'}`}>
-              {t}
-            </button>
-          ))}
-          <div className="ml-auto">
+        {/* Filter + Search bar */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '2rem', flexWrap: 'wrap' }}>
+          {topics.map(t => {
+            const active = activeFilter === t;
+            const cfg = t !== 'All' ? tagConfig[t] : null;
+            return (
+              <button key={t} onClick={() => setActiveFilter(t)} style={{
+                padding: '6px 16px',
+                fontFamily: 'Share Tech Mono, monospace',
+                fontSize: '0.68rem',
+                letterSpacing: '0.1em',
+                textTransform: 'uppercase',
+                borderRadius: '6px',
+                border: active
+                  ? `1px solid ${cfg ? cfg.color : '#3b82f6'}60`
+                  : '1px solid rgba(56,100,200,0.15)',
+                background: active
+                  ? `${cfg ? cfg.color : '#3b82f6'}15`
+                  : 'transparent',
+                color: active
+                  ? (cfg ? cfg.color : '#60a5fa')
+                  : '#475569',
+                cursor: 'pointer',
+                transition: 'all 0.2s',
+              }}>
+                {t}
+              </button>
+            );
+          })}
+
+          <div style={{ marginLeft: 'auto' }}>
             <input
               type="text"
               placeholder="Search articles..."
-              className="px-4 py-2 font-mono text-[0.72rem] rounded-lg bg-space-800/60
-                border border-plasma-700/25 text-slate-400 placeholder-slate-600
-                focus:outline-none focus:border-plasma-500/50 w-48"
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              style={{
+                padding: '7px 16px',
+                fontFamily: 'Share Tech Mono, monospace',
+                fontSize: '0.72rem',
+                borderRadius: '8px',
+                background: 'rgba(8,18,42,0.8)',
+                border: '1px solid rgba(56,100,200,0.2)',
+                color: '#94a3b8',
+                outline: 'none',
+                width: '200px',
+              }}
             />
           </div>
         </div>
 
-        {/* Featured article */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-          <ArticleCard article={articles[0]} i={0} featured />
+        {/* Featured */}
+        <div style={{ marginBottom: '1.5rem' }}>
+          <FeaturedCard article={articles[0]} />
         </div>
 
-        {/* Rest */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-          {articles.slice(1).map((a, i) => (
-            <ArticleCard key={a.id} article={a} i={i + 1} />
-          ))}
+        {/* Grid */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
+          gap: '1rem',
+          marginBottom: '4rem',
+        }}>
+          {filtered.length > 0 ? filtered.map((a, i) => (
+            <ArticleCard key={a.id} article={a} i={i} />
+          )) : (
+            <div style={{
+              gridColumn: '1 / -1', textAlign: 'center', padding: '3rem',
+              fontFamily: 'Share Tech Mono, monospace', color: '#334155', fontSize: '0.8rem',
+            }}>
+              // No articles found
+            </div>
+          )}
         </div>
 
         {/* Newsletter */}
-        <SectionCard className="text-center hover:border-neon-500/25">
-          <div className="text-3xl mb-4">📡</div>
-          <h3 className="font-orbitron font-bold text-xl text-slate-100 mb-2">Stay Ahead of the Curve</h3>
-          <p className="text-slate-400 text-sm max-w-md mx-auto mb-6 leading-relaxed">
+        <div style={{
+          background: 'linear-gradient(135deg, rgba(10,22,50,0.95), rgba(6,14,35,0.98))',
+          border: '1px solid rgba(56,100,200,0.2)',
+          borderRadius: '14px',
+          padding: '2.5rem',
+          textAlign: 'center',
+          position: 'relative',
+          overflow: 'hidden',
+        }}>
+          <div style={{
+            position: 'absolute', top: 0, left: 0, right: 0, height: '1px',
+            background: 'linear-gradient(90deg, transparent, #3b82f680, transparent)',
+          }} />
+
+          <div style={{
+            fontFamily: 'Share Tech Mono, monospace', fontSize: '0.65rem',
+            letterSpacing: '0.2em', color: '#3b82f6', marginBottom: '12px',
+          }}>// STAY UPDATED</div>
+
+          <h3 style={{
+            fontFamily: 'Orbitron, monospace', fontWeight: 700,
+            fontSize: '1.3rem', color: '#e2e8f0', marginBottom: '10px',
+          }}>Stay Ahead of the Curve</h3>
+
+          <p style={{
+            color: '#64748b', fontSize: '0.85rem', lineHeight: 1.7,
+            maxWidth: '420px', margin: '0 auto 1.5rem',
+          }}>
             Weekly VLSI insights, industry news, and job alerts — straight to your inbox. No spam, unsubscribe anytime.
           </p>
-          <div className="flex gap-3 justify-center flex-wrap">
+
+          <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', flexWrap: 'wrap' }}>
             <input
               type="email"
               placeholder="your@email.com"
-              className="px-4 py-2.5 font-mono text-sm rounded-lg bg-space-800/80
-                border border-plasma-700/30 text-slate-300 placeholder-slate-600
-                focus:outline-none focus:border-plasma-500/50 w-64"
+              style={{
+                padding: '10px 18px',
+                fontFamily: 'Share Tech Mono, monospace',
+                fontSize: '0.78rem',
+                borderRadius: '8px',
+                background: 'rgba(5,10,26,0.8)',
+                border: '1px solid rgba(56,100,200,0.25)',
+                color: '#94a3b8',
+                outline: 'none',
+                width: '240px',
+              }}
             />
-            <button className="px-5 py-2.5 font-exo font-semibold text-sm tracking-wide
-              bg-gradient-to-r from-plasma-600 to-neon-700 text-white rounded
-              hover:shadow-[0_0_20px_rgba(124,58,237,0.5)] transition-all duration-200">
-              Subscribe
+            <button style={{
+              padding: '10px 24px',
+              fontFamily: 'Share Tech Mono, monospace',
+              fontSize: '0.75rem',
+              letterSpacing: '0.1em',
+              background: 'linear-gradient(135deg, #1d4ed8, #3b82f6)',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              transition: 'all 0.2s',
+            }}
+            onMouseEnter={e => e.currentTarget.style.boxShadow = '0 0 20px rgba(59,130,246,0.4)'}
+            onMouseLeave={e => e.currentTarget.style.boxShadow = 'none'}
+            >
+              SUBSCRIBE →
             </button>
           </div>
-        </SectionCard>
+        </div>
 
       </div>
     </>

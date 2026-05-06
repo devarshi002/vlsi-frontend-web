@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { submitContactEnquiry } from '../api/enquiry';
 import PageHero from '../components/shared/PageHero';
 import { Phone, Mail, MapPin, Clock, Send, CheckCircle } from 'lucide-react';
-
+import COMPANY from '../config/company';
 const courses = [
   'RTL Design & Synthesis', 'Physical Design & STA', 'Functional Verification',
   'Analog Layout Design', 'DFT & Low Power Design', 'VLSI Full-Stack Bootcamp',
@@ -11,10 +11,10 @@ const courses = [
 const modes = ['Weekday Batch', 'Weekend Batch', 'Online Live', '1-on-1 Mentorship'];
 
 const contactInfo = [
-  { icon: <Phone size={15}/>, label: 'PHONE', value: '+91 80 1234 5678', sub: 'Mon–Sat, 9 AM – 7 PM' },
-  { icon: <Mail size={15}/>, label: 'EMAIL', value: 'hello@nanocore.in', sub: 'We reply within 4 hours' },
+  { icon: <Phone size={15}/>, label: 'PHONE', value: COMPANY.phone, sub: 'Mon–Sat, 9 AM – 7 PM' },
+  { icon: <Mail size={15}/>, label: 'EMAIL', value: COMPANY.email, sub: 'We reply within 4 hours' },
   { icon: <MapPin size={15}/>, label: 'KORAMANGALA CENTER', value: '#42, 5th Block, Koramangala', sub: 'Bangalore – 560095' },
-  { icon: <MapPin size={15}/>, label: 'HSR LAYOUT CENTER', value: '#18, Sector 1, HSR Layout', sub: 'Bangalore – 560102' },
+  { icon: <MapPin size={15}/>, label: 'HSR LAYOUT CENTER', value: COMPANY.address, sub: COMPANY.city },
   { icon: <Clock size={15}/>, label: 'LAB HOURS', value: 'Mon–Sat: 8 AM – 9 PM', sub: 'Sunday: 9 AM – 5 PM' },
 ];
 
@@ -249,7 +249,7 @@ export default function ContactPage() {
               </div>
             ))}
 
-            <a href="https://wa.me/918012345678" target="_blank" rel="noreferrer"
+            <a href={`https://wa.me/${COMPANY.whatsapp}`} target="_blank" rel="noreferrer"
               className="flex items-center justify-center gap-2 py-3.5 font-mono text-xs tracking-widest uppercase transition-all duration-200"
               style={{ border: '1px solid rgba(37,211,102,0.4)', color: '#25d366', background: 'transparent' }}
 onMouseEnter={e => e.currentTarget.style.background='rgba(37,211,102,0.08)'}

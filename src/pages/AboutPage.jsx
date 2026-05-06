@@ -1,7 +1,7 @@
 import PageHero from '../components/shared/PageHero';
 import CTASection from '../components/CTASection';
 import { useInView } from '../hooks/useInView';
-
+import COMPANY from '../config/company';
 const team = [
   { initials: 'DR', name: 'Dr. Rajesh Iyer',   role: 'Founder & Director',          exp: '22 yrs · Ex-Intel',             bio: 'Physical design lead at Intel Bangalore for 12 years. PhD from IISc. Has taped out 40+ chips across 7nm–180nm nodes.' },
   { initials: 'AM', name: 'Ananya Menon',       role: 'Head of Curriculum',           exp: '15 yrs · Ex-Qualcomm',          bio: 'RTL architect at Qualcomm. Designed baseband processors for Snapdragon SoCs. M.Tech IIT Madras.' },
@@ -12,7 +12,7 @@ const team = [
 ];
 
 const milestones = [
-  { year: '2012', event: 'NanoCore founded in a 200 sqft room in Koramangala with 8 students' },
+  { year: COMPANY.founded, event: `${COMPANY.name} founded in a 200 sqft room in Koramangala with 8 students` },
   { year: '2014', event: 'First corporate training contract with a Bangalore fabless startup' },
   { year: '2016', event: 'Moved to dedicated 3000 sqft lab with licensed Synopsys & Cadence tools' },
   { year: '2018', event: 'Crossed 500 trained engineers; opened HSR Layout center' },
@@ -24,7 +24,7 @@ const milestones = [
 
 const stats = [
   { n: '2500+', l: 'Engineers Trained' },
-  { n: '12+',   l: 'Years of Excellence' },
+  { n: `${new Date(). getFullYear() - parseInt(COMPANY.founded)}+`, 1: 'Year of Excellence' },
   { n: '150+',  l: 'Hiring Partners' },
   { n: '98%',   l: 'Placement Rate' },
 ];
@@ -94,7 +94,7 @@ function StorySection() {
           </p>
           <p className="font-mono text-[0.73rem] leading-relaxed"
             style={{ color: 'rgba(168,200,224,0.5)' }}>
-            With 8 students, a projector, and borrowed EDA licenses, NanoCore was born. Today we operate
+            With 8 students, a projector, and borrowed EDA licenses, {COMPANY.name} was born. Today we operate
             two physical labs in Bangalore, a full online platform, and a network of 150+ semiconductor
             companies who trust us to source their talent.
           </p>
@@ -228,7 +228,7 @@ export default function AboutPage() {
       <PageHero
         tag="// WHO WE ARE"
         title={<>Built by Engineers,<br />For Engineers</>}
-        subtitle="NanoCore started in 2012 with a simple belief — that India's VLSI talent gap could be closed with the right training, the right tools, and the right mentors."
+        subtitle={` ${COMPANY.name} started in ${COMPANY.founded} with a simple belief — that India's VLSI talent gap could be closed with the right training, the right tools, and the right mentors.`}
       />
 
       <div className="relative z-10 py-16 px-6 lg:px-16 max-w-7xl mx-auto"

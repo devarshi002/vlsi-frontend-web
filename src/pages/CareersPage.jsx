@@ -1,6 +1,7 @@
 import PageHero from '../components/shared/PageHero';
 import CTASection from '../components/CTASection';
 import { useInView } from '../hooks/useInView';
+import COMPANY from '../config/company';
 
 const openings = [
   { id: 1, title: 'Senior RTL Design Trainer',    type: 'Full-time', mode: 'Hybrid',   location: 'Bangalore', exp: '8+ years',  skills: ['Verilog', 'SystemVerilog', 'Synopsys DC', 'Cadence Genus'], urgent: true },
@@ -17,7 +18,7 @@ const perks = [
   { icon: '🏠', title: 'Flexible Work',     desc: 'Hybrid and remote options for most roles. We trust you to manage your time.' },
   { icon: '🏥', title: 'Health Coverage',   desc: 'Comprehensive health insurance for you and your immediate family.' },
   { icon: '🌴', title: 'Generous Leave',    desc: '24 days paid leave + 10 national holidays + your birthday off.' },
-  { icon: '🎓', title: 'Free Courses',      desc: 'All NanoCore courses and workshops are free for employees and one family member.' },
+  { icon: '🎓', title: 'Free Courses',      desc: `All ${COMPANY.name} courses and workshops are free for employees and one family member.` },
 ];
 
 const internRoles = [
@@ -162,7 +163,7 @@ export default function CareersPage() {
               </h2>
               <p className="font-mono text-[0.73rem] leading-relaxed mb-4"
                 style={{ color: 'rgba(168,200,224,0.65)' }}>
-                At NanoCore, every team member is a domain expert who genuinely cares about student outcomes.
+                At {COMPANY.name}, every team member is a domain expert who genuinely cares about student outcomes.
                 We don't hire people to fill seats — we hire people who want to build something meaningful
                 for India's semiconductor future.
               </p>

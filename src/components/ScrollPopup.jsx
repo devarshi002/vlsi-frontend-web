@@ -1,13 +1,10 @@
 import { useState, useEffect } from 'react';
 import { X, Send, CheckCircle } from 'lucide-react';
 import { submitPopupEnquiry } from '../api/enquiry';
+import COMPANY from '../config/company';
+const courses = COMPANY.courses
 
-const courses = [
-  'RTL Design & Synthesis','Physical Design & STA','Functional Verification',
-  'Analog Layout Design','DFT & Low Power Design','VLSI Full-Stack Bootcamp',
-];
-
-const STORAGE_KEY = 'nanocore_popup_dismissed';
+const STORAGE_KEY = `${COMPANY.name.toLowerCase().replace(' ','_')}_popup_dismissed`;
 const SCROLL_THRESHOLD = 10;
 
 export default function ScrollPopup() {
