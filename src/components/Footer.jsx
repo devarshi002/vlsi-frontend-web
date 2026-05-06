@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-
+import COMPANY from '../config/company';
 const footerLinks = {
   Courses: [
     { label: 'RTL Design', to: '/services' },
@@ -34,15 +34,14 @@ export default function Footer() {
         <div>
           <div className="mb-5">
             <div className="flex items-center gap-0 mb-1">
-              <span className="font-mono text-white tracking-[3px]">NANO</span>
-              <span className="font-mono text-electric tracking-[3px]">CORE</span>
+              <span className="font-mono text-white tracking-[3px]">{COMPANY.name}</span>
             </div>
             <div className="font-mono text-[0.48rem] tracking-[4px] text-steel-600 uppercase">
-              VLSI TRAINING INSTITUTE
+              {COMPANY.tagline}
             </div>
           </div>
           <p className="font-mono text-[0.7rem] text-steel-600 leading-relaxed mb-4">
-            India's most advanced VLSI training institute. Empowering engineers since 2012.
+            {COMPANY.tagline}. Empowering engineers since {COMPANY.founded}.
           </p>
           <p className="font-mono text-[0.65rem] text-electric/50">
             ▸ Koramangala · HSR Layout · Online
@@ -71,7 +70,7 @@ export default function Footer() {
       <div className="px-6 lg:px-16 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 max-w-7xl mx-auto"
         style={{ borderTop: '1px solid rgba(0,180,255,0.06)' }}>
         <p className="font-mono text-[0.62rem] text-steel-700">
-          © 2025 NanoCore VLSI Institute. All rights reserved.
+          © {new Date().getFullYear()} {COMPANY.fullName}. All rights reserved
         </p>
         <p className="font-mono text-[0.6rem] text-electric/25">
           // Designed for engineers · Built for Silicon Valley

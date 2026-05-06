@@ -7,6 +7,7 @@ import Testimonials from '../components/Testimonials';
 import CTASection from '../components/CTASection';
 import { useInView } from '../hooks/useInView';
 import ScrollPopup from '../components/ScrollPopup';
+import COMPANY from '../config/company';
 
 const values = [
   { icon: '🎯', title: 'Excellence',        desc: 'Every course, mentor, and lab session held to the highest industry standard — no shortcuts, no filler.' },
@@ -61,7 +62,7 @@ function VMCSection() {
               style={{ color: 'rgba(168,200,224,0.45)' }}>
               By 2030, we aim to train{' '}
               <span style={{ color: '#00b4ff' }}>10,000+ VLSI engineers</span> and establish
-              NanoCore as the de-facto standard for semiconductor talent in South Asia.
+              {COMPANY.name} as the de-facto standard for semiconductor talent in South Asia.
             </p>
 
             {/* Bottom stat */}
