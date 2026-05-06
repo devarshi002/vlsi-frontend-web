@@ -2,7 +2,7 @@
 // In development: FastAPI runs on localhost:8000
 // In production:  set VITE_API_URL in your Vercel/Netlify env vars
 //                 e.g. VITE_API_URL=https://nanocore-backend.onrender.com
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const BASE_URL = import.meta.env.VITE_API_URL || 'https://vlsi-backend-web.onrender.com';
 
 // ── Popup form ────────────────────────────────────────────────────────────
 export async function submitPopupEnquiry(data) {
